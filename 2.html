@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>我的导航</title>
+  <link rel="stylesheet" href="style.css">
+  <header></header>
+  <main>
+    <div class="wrapper" id="main">
+
+    </div>
+  </main>
+  <footer></footer>
+  <script>
+    //1.初始化数据
+    var keys = {
+      '0': { 0: 'q', 1: 'w', 2: 'e', 3: 'r', 4: 't', 5: 'y', 6: 'u', 7: 'i', 8: 'o', 9: 'p', length: 10 },
+      '1': { 0: 'a', 1: 's', 2: 'd', 3: 'f', 4: 'g', 5: 'h', 6: 'j', 7: 'k', 8: 'l', length: 9 },
+      '2': { 0: 'z', 1: 'x', 2: 'c', 3: 'v', 4: 'b', 5: 'n', 6: 'm', length: 7 },
+      'length': 3
+    }
+    var hash = {
+      'q': 'qq.com', 'w': 'weibo.com', 'e': 'ele.me', 'r': 'renren.com', 't': 'tianya.com', 'y': 'youtube.com',
+      'u': 'uc.com', 'i': 'iqiyi.com', 'o': 'opera.com', 'p': 'undefined', 'a': 'acfun.tv', 's': 'sohu.com',
+      'z': 'zhihu.com', 'm': 'www.mcdonalds.com.cn'
+    }
+    //取出localStorage中的zzz对应的hash
+    var hashInLocalStorage = getFromLocalStorage('zzz')
+    if (hashInLocalStorage) {
+      hash = hashInLocalStorage
+    }
+
+
+
+    //  function tag(tagName,attributes){
+    //    var element=document.createElement(tagName)
+    //    for(var key in attributes){
+    //      element[key]=attributes[key]
+    //    }
+    //    return element
+    //  }
+
+    function tag(tagName) {
+      return document.createElement(tagName)
+    }
+    //2.生成键盘
+    //遍历keys，生成kbd标签
+
+    for (var index = 0; index < keys['length']; index = index + 1) {
+
+    }
+    var index = 0
+    while (index < keys['length']) {//0 1 2
+      //var div=tag('div',{className:'row'})  
+      var div = tag('div')
+      div.className = 'row'
+      main.appendChild(div)
+      var row = keys[index]//第一个数组  第二数组 第三个数组
+      var index2 = 0
+      while (index2 < row['length']) {//0~9 0~8 0~6
+        var kbd = tag('kbd')
+        var span = tag('span')
+        span.textContent = row[index2]
+        span.className = "text"
+        kbd.appendChild(span)
+
+        kbd.className = 'key'
+        var buttonX = tag('button')
+        buttonX.textContent = "编辑"
+        buttonX.id = row[index2]
+        var img = tag('img')
+        if (hash[row[index2]]) {
+          img.src = 'http://' + hash[row[index2]] + '/favicon.ico'
+        } else {
+          img.src = "https://i.loli.net/2017/11/10/5a05afbc5e183.png"
+        }
+        img.onerror = function (xxx) {
+          xxx.target.src = "https://i.loli.net/2017/11/10/5a05afbc5e183.png"
+        }
+
+
+
+        buttonX.onclick = function (zxkjcnxlkcjlk) {
+          //zxkjcnxlkcjlk['target']就是用户点击的元素
+          var button2 = zxkjcnxlkcjlk['target']
+          var img2 = button2.previousSibling
+          // key=zxkjcnxlkcjlk['target']['id']//q w e r t
+          var key = button2['id']
+          var x = prompt("给我一个网址")//qq.com
+          hash[key] = x//hash 变更
+          img2.src = 'http://' + img2 + '/favicon.ico'
+          img2.onerror = function (xxx) {
+            xxx.target.src = "https://i.loli.net/2017/11/10/5a05afbc5e183.png"
+          }
+          localStorage.setItem('zzz', JSON.stringify(hash))
+          console.log(hash)
+        }
+        kbd.appendChild(img)
+        kbd.appendChild(buttonX)
+        div.appendChild(kbd)
+        index2 = index2 + 1
+      }
+      index = index + 1
+    }
+    //3.监听键盘
+    document.onkeypress = function (zxkjcnxlkcjlk) {
+      var key = zxkjcnxlkcjlk['key']
+      var website = hash[key]
+      // location.href='http://'+website
+      window.open('http://' + website, '_blank')
+
+    }
+
+
+    function getFromLocalStorage(name) {
+      return JSON.parse(localStorage.getItem(name) || 'null')
+    }
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
